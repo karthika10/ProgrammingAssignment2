@@ -1,17 +1,32 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Following functions cache's the inverse of a matrix and avoids recalculation when called for at a later time
 
-## Write a short comment describing this function
-
-# retesting git commit
+## makeCacheMatrix creates the inverse of a matrix and cache's it(saves it) in memory
 
 makeCacheMatrix <- function(x = matrix()) {
-
+     m <- NULL
+     set <- function(y) {
+          x <<- y
+          m <<- NULL
+     }
+     get <- function() x
+     setsolve <- function(solve) m <<- solve
+     getsolve <- function() m
+     list(set = set, get = get,
+          setsolve = setsolve,
+          getsolve = getsolve)
 }
 
 
-## Write a short comment describing this function
+## cacheSolve checks if the inverse of a previously studied matrix has been computed and returns it from memory
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+     m <- x$getsolve()
+     if(!is.null(m)) {
+          message("getting cached data")
+          return(m)
+     }
+     data <- x$get()
+     m <- solve(data, ...)
+     x$setsolve(m)
+     m
 }
